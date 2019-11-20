@@ -1,0 +1,51 @@
+version: "2.2"
+networks:
+  mifos:
+    driver: bridge
+services:
+  mifos-app-server:
+    image: com.neocova.tomcat.demo.01.19
+    restart: always
+    ports:
+      - 8443:8443
+      - 8080:8080
+    networks:
+      - mifos
+    depends_on:
+      mifos-db-server:
+        condition: service_healthy
+      mifos-sms-server:
+        condition: service_healthy
+    healthcheck:
+      test: curl -kfsS https://127.0.0.1:8443 | grep 'Tomcat' | wc -l
+      interval: 5s
+      retries: 20
+  mifos-db-server:
+    image: com.neocova.mysql.demo.01.19
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    healthcheck:
+      test:  mysqladmin --user=root --password=mysql ping -h localhost
+      interval: 5s
+      retries: 20
+    networks:
+      - mifos
+  mifos-sms-server:
+    image: com.neocova.activemq.demo.01.19
+    restart: always
+    environment:
+      ACTIVEMQ_CONFIG_MINMEMORY: 512
+      ACTIVEMQ_CONFIG_MAXMEMORY: 1024
+    healthcheck:
+      test:  curl -u admin:admin -s http://localhost:8161/admin
+      interval: 5s
+      retries: 20
+    networks:
+      - mifos
+volumes:
+    mysql:
