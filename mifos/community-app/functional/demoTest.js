@@ -1,7 +1,7 @@
 define(['mifosX', 'services/HttpServiceProvider', 'services/ResourceFactoryProvider'], {
     configure: function (url) {
 
-        var baseUrl = url || "https://localhost:8443";
+        var baseUrl = url || "https://localhost:443";
         mifosX.ng.services.config(['HttpServiceProvider', 'ResourceFactoryProvider', '$httpProvider', function (httpServiceProvider, resourceFactoryProvider, httpProvider) {
 
                 // Below initialization has been moved to   InitialTask.js

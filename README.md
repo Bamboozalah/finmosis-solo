@@ -48,7 +48,7 @@ $ docker ps | grep demo.01.19
 username: mifos
 password: password
 
-https://localhost:8443/community-app/#/ (this is a self signed certificate and will prompt a warning in your web browser, just ignore it and continue)
+https://localhost:443/community-app/#/ (this is a self signed certificate and will prompt a warning in your web browser, just ignore it and continue)
 
 
 8. Note if you have any issues with the volumes and/or entry points remove the volumes (be cautious and never do do this in Production)
